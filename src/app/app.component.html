@@ -1,3 +1,67 @@
+<div *ngLet="(this.authSvc.user$ | async) || {} as user">
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-header>
+    <toolbar>
+       
+    </toolbar>
+
+  </ion-header>
+  
+
+  <ion-menu  side="start" menuId="first" contentId="content1" class="my-custom-menu" >
+   
+   
+      <ion-toolbar>
+        <ion-title>
+          {{user.displayName}}
+        </ion-title>
+      </ion-toolbar>
+  
+
+  
+    <ion-content *ngIf="!user.displayName;else login2">
+      <ion-list *ngFor="let pages of navigate">
+      <ion-menu-toggle auto-hide="true">
+        <ion-item [routerLink]="pages.url" routerDirection="forward">
+          <div tabindex="0">
+            <ion-icon [name]="pages.icon" slot="start"></ion-icon>
+               {{pages.title}} 
+              </div>
+        </ion-item>
+      </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+
+
+    <ng-template #login2>
+      <ion-content *ngIf="user.displayName">
+        <ion-list *ngFor="let pages of navigate2">
+        <ion-menu-toggle auto-hide="true">
+          <ion-item [routerLink]="pages.url" routerDirection="forward">
+            <div tabindex="0">
+              <ion-icon [name]="pages.icon" slot="start"></ion-icon>
+                 {{pages.title}} 
+                </div>
+          </ion-item>
+        </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+ 
+
+
+
+
+
+
+  </ion-menu> 
+
+ 
+<ion-router-outlet id="content1"></ion-router-outlet>
+
+
+
+    
+ 
 </ion-app>
+</div>

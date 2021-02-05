@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title ><b>Ripristina la password</b></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content padding fxHide-fxFlex.gt-sm>
+  
+  <ion-grid fixed>
+
+
+    <ion-card class="card" >
+     
+      
+      <ion-card-content class="body" >
+        
+      <form [formGroup]="sendForm">  
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start">
+          <ion-item  style="--background: #f5f5f5" lines="full">
+            <ion-label position="floating"
+              [style.color]="(sendForm.get('email').touched || sendForm.get('email').dirty) && this.sendForm.get('email').errors ? 'red' : ''">
+              Indirizzo email <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input type="email" formControlName="email" autocomplete="email" inputmode="email" required></ion-input>
+          <ion-icon name="at-sharp" slot="end" size="small"></ion-icon>
+          </ion-item>
+          <validation-error
+          *ngIf="(sendForm.get('email').touched || sendForm.get('email').dirty) && (sendForm.get('email').hasError('email') || sendForm.get('email').hasError('required'))">
+          Inserisci un indirizzo email valido
+          </validation-error>
+          <validation-error *ngIf="sendForm.get('email').hasError('notFound')">
+          L'indirizzo email non è associato ad alcun account
+          </validation-error>
+        </div>
+          
+          
+          <br>
+
+
+         
+            <ion-button style="--background: #ca2400" shape="round" (click)="onReset()" [disabled]="!sendForm.valid" expand="full" >Ripristina Password</ion-button>
+         
+
+
+      </form>
+      
+      
+      </ion-card-content>
+       </ion-card>   
+
+
+
+  </ion-grid>
+
+
+</ion-content>
+   

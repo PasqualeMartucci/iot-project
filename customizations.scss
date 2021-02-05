@@ -1,0 +1,35 @@
+.custom-toast {
+    --width: calc(100% - 40px);
+    --max-width: 568px;
+
+    &.success {
+        --color: #dbdbdb;
+        --background: darkgreen;
+        --button-color: lightgreen;
+    }
+
+    &.error {
+        --color: #dbdbdb;
+        --background: darkred;
+        --button-color: red;
+    }
+}
+
+
+.custom-alert {
+    --width: calc(100% - 40px);
+    --max-width: 568px;
+
+    .alert-wrapper {
+        overflow: auto;
+    }
+}
+
+.none{
+    display: none;
+}
+
+.datatable-header-cell, .datatable-body-cell {
+   display: flex !important;
+   align-items: center !important;
+}

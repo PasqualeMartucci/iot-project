@@ -1,0 +1,146 @@
+
+  <ion-content class="img" padding fxHide-fxFlex.gt-sm>
+  
+    <ion-grid fixed>
+  
+  
+      <ion-card class="card" >
+        <ion-card-content class="testa" >
+          <ion-card-header>
+            <ion-card-title >
+            <b>REGISTRATI</b> 
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card-content>
+        
+        <ion-card-content class="body" >
+        
+        
+         
+          
+        <form [formGroup]="registerForm"> 
+        
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start">
+            <div tabindex="0">
+          <ion-item  style="--background: #f5f5f5" lines="full">
+            
+            <ion-label position="floating"
+                [style.color]="(registerForm.get('displayName').touched || registerForm.get('displayName').dirty) && this.registerForm.get('displayName').errors ? 'red' : ''">
+                Nome e Cognome <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input type="text" formControlName="displayName" autocomplete="displayName" required></ion-input>
+           
+         
+          </ion-item>
+        </div>
+          
+          </div>
+          <validation-error
+        *ngIf="(registerForm.get('displayName').touched || registerForm.get('displayName').dirty) && (registerForm.get('displayName').hasError('required'))">
+        Inserisci Nome e Cognome
+        </validation-error>
+       
+          <br>
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start">
+          <div tabindex="0">
+        <ion-item  style="--background: #f5f5f5" lines="full">
+          
+          <ion-label position="floating"
+              [style.color]="(registerForm.get('email').touched || registerForm.get('email').dirty) && this.registerForm.get('email').errors ? 'red' : ''">
+              Indirizzo email <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input type="email" formControlName="email" autocomplete="email" inputmode="email" required></ion-input>
+          <ion-icon name="at-sharp" slot="end" size="small"></ion-icon>
+       
+        </ion-item>
+      </div>
+        
+        </div>
+  
+        
+        
+        <validation-error
+        *ngIf="(registerForm.get('email').touched || registerForm.get('email').dirty) && (registerForm.get('email').hasError('email') || registerForm.get('email').hasError('required'))">
+        Inserisci un indirizzo email valido
+        </validation-error>
+        <validation-error *ngIf="registerForm.get('email').hasError('alreadyInUse')">
+        L'indirizzo email è stato già utilizzato per iscriversi
+        </validation-error>
+        
+        <br>
+        
+       
+    
+        
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start">
+          <div tabindex="0">
+            <ion-item style="--background: #f5f5f5" lines="full" >
+            
+                <ion-label position="floating"
+                    [style.color]="(registerForm.get('password').touched || registerForm.get('password').dirty) && this.registerForm.get('password').errors ? 'red' : ''">
+                    Password<ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-input  [type]="showPassword ? 'text' : 'password'" formControlName="password" required>
+                </ion-input>
+                <ion-button fill="clear" slot="end" size="small" (click)="showPassword = !showPassword" >
+                    <ion-icon [name]="showPassword? 'eye-sharp' : 'eye-off'" slot="icon-only">
+                    </ion-icon>
+                </ion-button>
+          
+              </ion-item>
+            </div>  
+        </div>
+        <validation-error
+        *ngIf="(registerForm.get('password').touched || registerForm.get('password').dirty) && registerForm.get('password').hasError('required')">
+        Immetti una password
+        </validation-error>
+    
+        
+        <br>
+        
+
+   
+
+
+
+        <div class="dimenticato"> <ion-label>Sei già registrato? </ion-label> <a [routerLink]="['/login']"> Accedi</a></div> 
+       
+        <div class="registerbutton">
+          <ion-button (click)="onRegister()" style="--background:  #d62839" shape="round"  [disabled]="!registerForm.valid" expand="full" >registrati</ion-button>
+        </div>  
+        </form>
+        
+        <br>
+               
+      
+        </ion-card-content>
+         </ion-card>   
+  
+  
+  
+    </ion-grid>
+  
+  
+  </ion-content>
+     
+  
+  
+    
+      
+  
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   

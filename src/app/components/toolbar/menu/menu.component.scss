@@ -1,0 +1,14 @@
+ion-list-header  {
+    padding: 0px 16px 8px;
+
+    ion-item {
+        --padding-start: 0px;
+        --padding-end: 0px;
+        --inner-padding-start: 0px;
+        --inner-padding-end: 0px;
+    }
+}
+
+ion-item:last-child {
+    --border-width: 0 0 0 0 !important;
+}

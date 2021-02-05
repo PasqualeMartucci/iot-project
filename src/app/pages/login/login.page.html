@@ -1,0 +1,130 @@
+
+  <ion-content class="img" padding fxHide-fxFlex.gt-sm>
+  
+    <ion-grid fixed>
+  
+  
+      <ion-card class="card" >
+        <ion-card-content class="testa" >
+          <ion-card-header>
+            <ion-card-title >
+            <b>EFFETTUA L'ACCESSO</b> 
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card-content>
+        
+        <ion-card-content class="body" >
+        
+        
+         
+          
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()"> 
+        
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start">
+          <div tabindex="0">
+        <ion-item  style="--background: #f5f5f5" lines="full">
+          
+          <ion-label position="floating"
+              [style.color]="(loginForm.get('email').touched || loginForm.get('email').dirty) && this.loginForm.get('email').errors ? 'red' : ''">
+              Indirizzo email <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input type="email" formControlName="email" autocomplete="email" inputmode="email" required></ion-input>
+          <ion-icon name="at-sharp" slot="end" size="small"></ion-icon>
+       
+        </ion-item>
+      </div>
+        
+        </div>
+  
+        <br>
+        
+        <validation-error
+        *ngIf="(loginForm.get('email').touched || loginForm.get('email').dirty) && (loginForm.get('email').hasError('email') || loginForm.get('email').hasError('required'))">
+        Inserisci un indirizzo email valido
+        </validation-error>
+        <validation-error *ngIf="loginForm.get('email').hasError('notFound')">
+        L'indirizzo email non è associato ad alcun account
+        </validation-error>
+        <validation-error *ngIf="loginForm.get('email').hasError('alreadyInUse')">
+        L'indirizzo email è stato già utilizzato per iscriversi
+        </validation-error>
+        
+        
+        
+        
+        <br>
+    
+        
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start">
+          <div tabindex="0">
+            <ion-item style="--background: #f5f5f5" lines="full" >
+            
+                <ion-label position="floating"
+                    [style.color]="(loginForm.get('password').touched || loginForm.get('password').dirty) && this.loginForm.get('password').errors ? 'red' : ''">
+                    Password<ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-input  [type]="showPassword ? 'text' : 'password'" formControlName="password" required>
+                </ion-input>
+                <ion-button fill="clear" slot="end" size="small" (click)="showPassword = !showPassword" >
+                    <ion-icon [name]="showPassword? 'eye-sharp' : 'eye-off'" slot="icon-only">
+                    </ion-icon>
+                </ion-button>
+          
+              </ion-item>
+            </div>
+              
+        </div>
+        <validation-error
+        *ngIf="(loginForm.get('password').touched || loginForm.get('password').dirty) && loginForm.get('password').hasError('required')">
+        Immetti una password
+        </validation-error>
+    
+        <validation-error *ngIf="loginForm.get('password').hasError('wrong')">
+        La password inserita non è corretta
+        </validation-error>
+        
+        <br>
+        
+        <div class="dimenticato"><a (click)="presentModal()">Hai dimenticato la password?</a></div> 
+        <br>
+        <div class="dimenticato"><a>Non hai un account?</a> <a [routerLink]="['/register']">Registrati</a>  </div> 
+       
+        <div class="loginbutton">
+          <ion-button type="submit" style="--background:  #d62839" shape="round"  [disabled]="!loginForm.valid" expand="full" >LOGIN</ion-button>
+        </div>  
+        </form>
+        
+        <br>
+               
+      
+        </ion-card-content>
+         </ion-card>   
+  
+  
+  
+    </ion-grid>
+  
+  
+  </ion-content>
+     
+  
+  
+    
+      
+  
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   
