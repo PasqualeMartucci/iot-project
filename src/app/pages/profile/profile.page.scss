@@ -1,0 +1,37 @@
+ion-card{
+    border-radius: 25px;
+    background: var(--ion-color-light);
+    margin: auto;
+    display: block;
+    margin-top: 150px;
+
+    ion-item {
+   
+        --highlight-height: 0;
+        --background: rgba(0, 0, 0, 0);
+    
+        &.item-has-focus ion-label {
+            color: unset;
+        }
+    
+        ion-label {
+            opacity: 1 !important;
+        }
+    
+        ion-input {
+            ::ng-deep .native-input[disabled] {
+                opacity: 1 !important;
+            }
+        }
+    
+        ion-button { 
+            align-self: flex-end;
+            --padding-start: 0px;
+            --padding-end: 0px;
+            margin-right: 0px;
+            margin-left: 16px;
+            color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
+        }
+    }
+}
+

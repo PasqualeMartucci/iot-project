@@ -2,7 +2,7 @@ import { User } from '../models/user.model';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { shareReplay, switchMap } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
@@ -10,28 +10,26 @@ import {
 //import { RoleValidator } from 'src/app/auth/helpers/roleValidator';
 import { ToastService, ToastType } from './toast.service';
 import { Router } from '@angular/router';
-
-
-
+import firebase from 'firebase/app';
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthService /* extends RoleValidator */ {
   public user$: Observable<User>;
-
+  private _user: firebase.User;
   constructor(public afAuth: AngularFireAuth,
     private toastr: ToastService, 
     private afs: AngularFirestore,
     private router: Router) {
    // super();
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap((user) => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        }
-        return of(null);
-      })
-    );
+   this.user$ = this.afAuth.authState.pipe(
+    switchMap(firebaseUser => {
+      this._user = firebaseUser;
+      if (!firebaseUser) return of(null);
+      return this.afs.doc<User>(`users/${firebaseUser.uid}`).valueChanges();
+    }),
+    shareReplay(1)
+  );
 
   }
 
@@ -106,6 +104,14 @@ export class AuthService /* extends RoleValidator */ {
 
     return userRef.set(data, { merge: true });
   }
+
+
+
+  updateUserData3(data: any) {
+    return this.afs.collection('users').doc(`/${this._user.uid}`).update({ ...data })
+  }
+
+ 
 
   public updateUserData2(user: User) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
