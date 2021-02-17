@@ -49,6 +49,8 @@ export class LoginPage implements OnInit {
     }
   }
 
+  
+
   async presentModal() {
     const modal = await this.modalController.create({
       component: SendEmailComponent,

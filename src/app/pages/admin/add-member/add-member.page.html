@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title ><b>Aggiungi un membro</b></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-searchbar debounce="500" (ionChange)="updateFilter($event)" animated placeholder="Cerca per nome o cognome...">    </ion-searchbar>
+<ngx-datatable
+*ngLet="((this.auth.users | async) || []) as User"
+class="material"
+[headerHeight]="50"
+[footerHeight]="50"
+[limit]="10"
+[rows]="this.filteredUsers"
+[columnMode]="'force'"
+[rowHeight]="'auto'"
+(activate)="onActivate($event)"
+style="margin-top: auto; margin-bottom: 320px"
+>
+
+<ngx-datatable-column>
+<ng-template let-column="column" ngx-datatable-header-template>
+ Nome e Cognome
+</ng-template>
+<ng-template let-row="row" ngx-datatable-cell-template>
+  {{row.displayName}}
+</ng-template>
+</ngx-datatable-column>
+
+<ngx-datatable-column>
+<ng-template let-column="column" ngx-datatable-header-template>
+Email
+</ng-template>
+<ng-template let-row="row" ngx-datatable-cell-template>
+{{row.email}}
+</ng-template>
+</ngx-datatable-column>
+
+
+</ngx-datatable>

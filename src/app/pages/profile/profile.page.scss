@@ -4,7 +4,10 @@ ion-card{
     margin: auto;
     display: block;
     margin-top: 150px;
-
+    .container {
+        height: 100%;
+    }
+    
     ion-item {
    
         --highlight-height: 0;

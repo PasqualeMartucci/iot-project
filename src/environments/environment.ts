@@ -12,6 +12,9 @@ export const environment = {
     storageBucket: "iot-unimore.appspot.com",
     messagingSenderId: "1024648529008",
     appId: "1:1024648529008:web:36fb51bda30e975f7220b5"
+  },
+  mapbox: {
+    accessToken: 'pk.eyJ1IjoibGViZXNndWUiLCJhIjoiY2tsMmpua210MTYwbDJvbGJhdm92bHF0YSJ9.wZaZ-MDfbxiBQZDMNKagGg'
   }
 };
 

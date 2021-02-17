@@ -1,5 +1,4 @@
-//export type Roles = 'VISITATORE' | 'ADMIN' | 'TEORIA' | 'GUIDA';
-
+export type Roles = 'ADMIN' | 'USER';
 
 export interface User {
   uid: string;
@@ -7,6 +6,9 @@ export interface User {
   displayName?: string;
   emailVerified: boolean;
   password?: string;
- // role?: Roles;
- /* phoneNumber: string; */
+  role?: Roles;
+  location?: any;
+  ssid? : string;
+  address? : string;
+  idFamiglia? : string;
 }

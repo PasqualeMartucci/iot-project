@@ -7,14 +7,18 @@
 
   </ion-header>
   
-
   <ion-menu  side="start" menuId="first" contentId="content1" class="my-custom-menu" >
    
    
       <ion-toolbar>
-        <ion-title>
+        <ion-title *ngIf="user.displayName; else noName">
           {{user.displayName}}
         </ion-title>
+        <ng-template #noName>
+          <ion-title *ngIf="!user.displayName">
+            Esegui l'accesso
+          </ion-title>
+        </ng-template>
       </ion-toolbar>
   
 

@@ -63,14 +63,9 @@
                     [style.color]="(loginForm.get('password').touched || loginForm.get('password').dirty) && this.loginForm.get('password').errors ? 'red' : ''">
                     Password<ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input  [type]="showPassword ? 'text' : 'password'" formControlName="password" required>
+                <ion-input  type="password" formControlName="password" required>
                 </ion-input>
-                <ion-button fill="clear" slot="end" size="small" (click)="showPassword = !showPassword" >
-                    <ion-icon [name]="showPassword? 'eye-sharp' : 'eye-off'" slot="icon-only">
-                    </ion-icon>
-                </ion-button>
-          
-              </ion-item>
+               </ion-item>
             </div>
               
         </div>

@@ -43,6 +43,11 @@ export class AppComponent implements OnInit {
               url   : "/profile",
               icon  : "person-circle-outline"
             },
+            {
+              title : "Amministratore",
+              url   : "/admin",
+              icon  : "document-lock-outline"
+            },
           ];
     }
 

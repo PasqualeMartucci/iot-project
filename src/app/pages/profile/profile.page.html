@@ -6,7 +6,7 @@
     <ion-card>
       <ion-card-header>
         <ion-title style="text-align: center">
-          <b>Account</b>
+          Account
         </ion-title>
       </ion-card-header>
   
@@ -17,14 +17,11 @@
               Nome e Cognome
             </ion-label>
   
-            <div
-              *ngIf="user.displayName!= undefined"
-            >
               <ion-input
                 [value]="user.displayName"
                 [disabled]="true"
-              ></ion-input>
-            </div>
+                ></ion-input>
+       
            
   
             <ion-button
@@ -37,6 +34,17 @@
             </ion-button>
           </ion-item>
   
+
+          <ion-item lines="full">
+            <ion-label style="--background: white" position="floating">
+              Indirizzo
+            </ion-label>
+            <ion-input [value]="user.address" [disabled]="true"></ion-input>
+            <ion-button fill="clear" slot="end" size="small">
+            </ion-button>
+          </ion-item>
+
+
           <ion-item lines="full">
             <ion-label style="--background: white" position="floating">
               Email
@@ -45,6 +53,9 @@
             <ion-button fill="clear" slot="end" size="small">
             </ion-button>
           </ion-item>
+
+          
+
         </div>
   
         <div class="sub-container-end">

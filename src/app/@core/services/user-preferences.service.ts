@@ -21,9 +21,9 @@ export class UserPreferencesService {
         })
     }
 
-    setDarkMode(enabled: boolean) {
-        Storage.set({ key: 'dark-theme', value: JSON.stringify(enabled) });
-        document.body.classList.toggle('dark', enabled);
-        this.OnDarkModeChange.next(enabled);
+    setDarkMode(enabled) {
+        Storage.set({ key: 'dark-theme', value: JSON.stringify(enabled.detail.checked) });
+        document.body.classList.toggle('dark', enabled.detail.checked);
+        this.OnDarkModeChange.next(enabled.detail.checked);
     }
 }

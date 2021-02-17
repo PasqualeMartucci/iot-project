@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ToolbarComponent } from './toolbar.component';
+import { FormsModule } from '@angular/forms';
 import { MenuComponent } from './menu/menu.component';
 
 
@@ -9,9 +10,10 @@ import { MenuComponent } from './menu/menu.component';
   imports: [
     CommonModule,
     IonicModule,
-  
+    FormsModule,
+    CommonModule
   ],
-  declarations: [ToolbarComponent,MenuComponent],
+  declarations: [ToolbarComponent],
   exports: [ToolbarComponent]
 })
 export class ToolbarModule {}

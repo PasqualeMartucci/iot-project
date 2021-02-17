@@ -1,0 +1,72 @@
+<ion-header style="padding: 20px 60px; background: var(--ion-color-light)">
+  
+  <ion-title class="box"><b> AMMINISTRATORE </b></ion-title>
+  <ion-button
+    mode="md"
+    style="--background: #d62839; font-weight: bold"
+    shape="round"
+    expand="full"
+    (click)="presentModal()"
+  >
+  Aggiungi un nuovo membro
+  </ion-button>
+  
+
+ <ion-searchbar debounce="500" (ionChange)="updateFilter($event)" animated placeholder="Cerca per nome o cognome...">  
+   
+ </ion-searchbar>
+
+
+     </ion-header>
+     
+     <ion-content fullscreen>
+
+    <ngx-datatable
+    class="material"
+    [rows]="filteredUsers"
+    [limit]="50"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="75"
+    [scrollbarV]="true"
+    [scrollbarH]="false"
+    style="height: 100%;"
+    >
+    
+
+    
+    <ngx-datatable-column>
+      <ng-template let-column="column" ngx-datatable-header-template>
+         Nome e Cognome
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+          {{row.displayName}}
+      </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column>
+    <ng-template let-column="column" ngx-datatable-header-template>
+       Data ultima modifica
+    </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.date ? (row.date.seconds * 1000 | date:'dd/MM/yyyy') : ''}}
+  </ng-template>
+</ngx-datatable-column>
+
+
+<ngx-datatable-column>
+  <ng-template let-column="column" ngx-datatable-header-template>
+     Ora ultima modifica
+  </ng-template>
+  <ng-template let-row="row" ngx-datatable-cell-template>
+    {{row.name}}
+</ng-template>
+</ngx-datatable-column>
+
+ 
+  </ngx-datatable>
+ 
+
+</ion-content>
+ 

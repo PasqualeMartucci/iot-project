@@ -2,26 +2,25 @@ import { User } from '../models/user.model';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, of } from 'rxjs';
-import { shareReplay, switchMap } from 'rxjs/operators';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-} from '@angular/fire/firestore';
-//import { RoleValidator } from 'src/app/auth/helpers/roleValidator';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { ToastService, ToastType } from './toast.service';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
+import { RoleValidator } from '../models/roleValidator';
 
 
 @Injectable({ providedIn: 'root' })
-export class AuthService /* extends RoleValidator */ {
+export class AuthService  extends RoleValidator  {
   public user$: Observable<User>;
   private _user: firebase.User;
+  users: Observable<User[]>;
+  users_family: Observable<User[]>;
   constructor(public afAuth: AngularFireAuth,
     private toastr: ToastService, 
     private afs: AngularFirestore,
     private router: Router) {
-   // super();
+    super();
    this.user$ = this.afAuth.authState.pipe(
     switchMap(firebaseUser => {
       this._user = firebaseUser;
@@ -31,8 +30,32 @@ export class AuthService /* extends RoleValidator */ {
     shareReplay(1)
   );
 
+  this.users = this.afs.collection<User>('users').snapshotChanges().pipe(
+    map(actions => actions.filter(a => a.payload.doc.id != this.userID).map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return { id, ...data };
+    }))
+  );
+
+  this.users_family = this.afs.collection<User>('users').snapshotChanges().pipe(
+    map(actions => actions.filter(a => a.payload.doc.data().idFamiglia == this.userID).map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return { id, ...data };
+    }))
+  );
+  
+  
+ 
   }
 
+
+
+  get userID() {
+    return this._user.uid;
+  }
+    
   async resetPassword(userEmail: string): Promise<void> {
     try {
       return this.afAuth.sendPasswordResetEmail(userEmail);
@@ -61,15 +84,17 @@ export class AuthService /* extends RoleValidator */ {
     }
   }
 
-  async register(email: string, password: string, Name:string): Promise<User> {
+  async register(email: string, password: string, Name:string,latitude,longitude,indirizzo,ssid): Promise<User> {
     try {
       const { user }  = await this.afAuth.createUserWithEmailAndPassword(email,password);
        user.updateProfile({
         displayName: Name,
       })
-      this.updateUserData(user,Name);
+      this.updateUserData(user,Name,latitude,longitude,indirizzo,ssid);
+      await this.sendVerificationEmail().then(()=>{
+        this.afAuth.signOut();
+      });
       this.toastr.makeToast("Registrazione effettua con successo, controlla la tua mail box !",ToastType.Success);
-      await this.sendVerificationEmail();
       return user;
     } catch (error) {
       this.toastr.makeToast(error,ToastType.Error);
@@ -87,21 +112,33 @@ export class AuthService /* extends RoleValidator */ {
     }
   }
 
-  public updateUserData(user: User,Name: string) {
+  public updateUserData(user: User,Name: string,latitude,longitude,indirizzo,ssid) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`
     );
-
+   
 
     const data: User = {
       uid: user.uid,
       email: user.email,
       emailVerified: user.emailVerified,
       displayName: Name,
-      //role: 'TEORIA',
+      location: new firebase.firestore.GeoPoint(latitude,longitude),
+      address: indirizzo,
+      ssid: ssid,
+      role: 'USER',
     };
 
 
+    return userRef.set(data, { merge: true });
+  }
+
+  public ssid(id: string) {
+    const userRef= this.afs.doc(`users/${this.userID}`);
+  
+    const data = {
+      ssid: id,
+    };
     return userRef.set(data, { merge: true });
   }
 
@@ -112,7 +149,7 @@ export class AuthService /* extends RoleValidator */ {
   }
 
  
-
+ 
   public updateUserData2(user: User) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`
@@ -121,12 +158,20 @@ export class AuthService /* extends RoleValidator */ {
       uid: user.uid,
       email: user.email,
       emailVerified: user.emailVerified,
-      displayName:  user.displayName,
     };
     return userRef.set(data, { merge: true });
+  } 
+
+
+  addMembro(uid){
+  /*  this.afs.collection("famiglia").doc(this.userID).set({
+    id: this.userID
+   }), */
+
+   this.afs.collection("users").doc(uid).update({
+     idFamiglia : this.userID
+   })
   }
-
-
 
 
 }

@@ -7,7 +7,7 @@
 <ion-icon name="moon-sharp" slot="start"></ion-icon>
 <ion-label>DarkMode</ion-label>
 <ion-toggle slot="end" [checked]="userPreferences.darkMode | async"
-(ionChange)="userPreferences.setDarkMode($event.detail.checked)"></ion-toggle>
+(ionChange)="userPreferences.setDarkMode($event)"></ion-toggle>
 </ion-item>
 
 
