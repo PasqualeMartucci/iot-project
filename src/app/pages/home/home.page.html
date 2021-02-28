@@ -1,5 +1,33 @@
 
 
+    
+
+    
+
+
+
+    <ion-card style="margin-top: 100px;">
+    
+        <ion-card-header>
+          <ion-title mode="md" style="text-align: center;padding:30px;">
+            Stato della serratura
+          </ion-title>
+        </ion-card-header>
+    
+        <ion-card-content>
+          
+         
+          <div class="container"
+           >
+            <span class="lock" (click)="lockUnlock()"  
+            [ngClass]="status ?  'unlocked' : 'lock'"></span>
+          </div>
+           
+        </ion-card-content>
+      </ion-card>
+    
+
+
 
 
 

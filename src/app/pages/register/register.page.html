@@ -94,26 +94,11 @@
         <br>
         
 
-        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start" >
-          <div tabindex="0">
-        <ion-item style="--background: #f5f5f5" lines="full">
-                 
-        <ion-searchbar debounce=500 placeholder="Cerca il tuo indirizzo"
-       (ionChange)="search($event)" [value]="selectedAddress"></ion-searchbar>
-        <ion-list lines="none" >
-        <ion-item button *ngFor="let address of addresses" (click)="onSelect(address)">
-          <ion-icon name="pin"></ion-icon>
-          {{ address }}
-        </ion-item>
-      </ion-list>         
-       </ion-item>
-        </div>
-      </div>
 
         <div class="dimenticato"> <ion-label>Sei già registrato? </ion-label> <a [routerLink]="['/login']"> Accedi</a></div> 
        
         <div class="registerbutton">
-          <ion-button (click)="onRegister()" style="--background:  #d62839" shape="round"  [disabled]="!registerForm.valid || selectedAddress==null" expand="full" >registrati</ion-button>
+          <ion-button (click)="onRegister()" style="--background:  #d62839" shape="round"  [disabled]="!registerForm.valid" expand="full" >registrati</ion-button>
         </div>  
         </form>
         

@@ -1,9 +1,9 @@
-<ion-header style="padding: 20px 60px; background: var(--ion-color-light)">
+<ion-header style="padding: 20px 60px 40px; background: var(--ion-color-light)">
   
-  <ion-title class="box"><b> AMMINISTRATORE </b></ion-title>
+  <ion-title mode="md" size="large" style="margin-top: 80px;color: black;text-align: center;padding:15px"> AMMINISTRATORE </ion-title>
   <ion-button
     mode="md"
-    style="--background: #d62839; font-weight: bold"
+    style="--background: #d62839; font-weight: bold;padding:1px"
     shape="round"
     expand="full"
     (click)="presentModal()"
@@ -12,14 +12,14 @@
   </ion-button>
   
 
- <ion-searchbar debounce="500" (ionChange)="updateFilter($event)" animated placeholder="Cerca per nome o cognome...">  
+ <ion-searchbar mode="md" debounce="500" (ionChange)="updateFilter($event)" placeholder="Cerca per nome">  
    
  </ion-searchbar>
 
 
      </ion-header>
      
-     <ion-content fullscreen>
+     <ion-content fullscreen="true">
 
     <ngx-datatable
     class="material"
@@ -32,8 +32,10 @@
     [scrollbarV]="true"
     [scrollbarH]="false"
     style="height: 100%;"
+    (activate)="onActivate($event)"
     >
     
+
 
     
     <ngx-datatable-column>
@@ -45,24 +47,7 @@
       </ng-template>
   </ngx-datatable-column>
 
-  <ngx-datatable-column>
-    <ng-template let-column="column" ngx-datatable-header-template>
-       Data ultima modifica
-    </ng-template>
-    <ng-template let-row="row" ngx-datatable-cell-template>
-      {{row.date ? (row.date.seconds * 1000 | date:'dd/MM/yyyy') : ''}}
-  </ng-template>
-</ngx-datatable-column>
-
-
-<ngx-datatable-column>
-  <ng-template let-column="column" ngx-datatable-header-template>
-     Ora ultima modifica
-  </ng-template>
-  <ng-template let-row="row" ngx-datatable-cell-template>
-    {{row.name}}
-</ng-template>
-</ngx-datatable-column>
+ 
 
  
   </ngx-datatable>

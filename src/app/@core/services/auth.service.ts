@@ -1,7 +1,7 @@
 import { User } from '../models/user.model';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { ToastService, ToastType } from './toast.service';
@@ -16,6 +16,9 @@ export class AuthService  extends RoleValidator  {
   private _user: firebase.User;
   users: Observable<User[]>;
   users_family: Observable<User[]>;
+  myUser: Observable<User[]>;
+  subscription: Subscription;
+  
   constructor(public afAuth: AngularFireAuth,
     private toastr: ToastService, 
     private afs: AngularFirestore,
@@ -31,7 +34,7 @@ export class AuthService  extends RoleValidator  {
   );
 
   this.users = this.afs.collection<User>('users').snapshotChanges().pipe(
-    map(actions => actions.filter(a => a.payload.doc.id != this.userID).map(a => {
+    map(actions => actions.filter(a => a.payload.doc.id != this.userID && a.payload.doc.data().idFamiglia != this.userID ).map(a => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
       return { id, ...data };
@@ -46,10 +49,16 @@ export class AuthService  extends RoleValidator  {
     }))
   );
   
-  
+ 
+  this.myUser = this.afs.collection<User>('users').snapshotChanges().pipe(
+    map(actions => actions.filter(a => a.payload.doc.id == this.userID).map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return { id, ...data };
+    }))
+  );
  
   }
-
 
 
   get userID() {
@@ -84,13 +93,13 @@ export class AuthService  extends RoleValidator  {
     }
   }
 
-  async register(email: string, password: string, Name:string,latitude,longitude,indirizzo,ssid): Promise<User> {
+  async register(email: string, password: string, Name:string,latitude,longitude,ssid): Promise<User> {
     try {
       const { user }  = await this.afAuth.createUserWithEmailAndPassword(email,password);
        user.updateProfile({
         displayName: Name,
       })
-      this.updateUserData(user,Name,latitude,longitude,indirizzo,ssid);
+      this.updateUserData(user,Name,latitude,longitude,ssid);
       await this.sendVerificationEmail().then(()=>{
         this.afAuth.signOut();
       });
@@ -112,7 +121,7 @@ export class AuthService  extends RoleValidator  {
     }
   }
 
-  public updateUserData(user: User,Name: string,latitude,longitude,indirizzo,ssid) {
+  public updateUserData(user: User,Name: string,latitude,longitude,ssid) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`
     );
@@ -123,8 +132,8 @@ export class AuthService  extends RoleValidator  {
       email: user.email,
       emailVerified: user.emailVerified,
       displayName: Name,
-      location: new firebase.firestore.GeoPoint(latitude,longitude),
-      address: indirizzo,
+      latitude: latitude,
+      longitude: longitude,
       ssid: ssid,
       role: 'USER',
     };
@@ -163,15 +172,46 @@ export class AuthService  extends RoleValidator  {
   } 
 
 
-  addMembro(uid){
-  /*  this.afs.collection("famiglia").doc(this.userID).set({
-    id: this.userID
-   }), */
+   addMembro(uid,ssid,latitude,longitude){
+  
+   const ref = this.afs.doc(`famiglia/${this.userID}`);   
+   ref.valueChanges().subscribe(response=>{
+     if(response == undefined){
+     this.afs.collection("famiglia").doc(this.userID).set({
+       idFamiglia: this.userID
+     }).then(()=>{
+       this.afs.collection("users").doc(uid).update({
+         idFamiglia: this.userID
+       });
+       this.afs.collection("dispositivi").doc(ssid).update({
+        latitude: latitude ,
+        longitude: longitude,
+        
+       })
+     });
+     }else{
+      this.afs.collection("users").doc(uid).update({
+        idFamiglia: this.userID
+      });
+     }
+     
 
+   });
+   this.toastr.makeToast("Membro aggiunto con successo",ToastType.Success);
+
+
+   }
+
+
+   deleteUser(uid){
    this.afs.collection("users").doc(uid).update({
-     idFamiglia : this.userID
+     idFamiglia: firebase.firestore.FieldValue.delete()
+   }).then(()=>{
+     this.toastr.makeToast("Utente eliminato con successo",ToastType.Success);
    })
-  }
+
+   }
+
 
 
 }

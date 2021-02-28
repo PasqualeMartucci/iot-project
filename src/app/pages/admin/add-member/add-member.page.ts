@@ -15,6 +15,7 @@ export class AddMemberPage implements OnInit {
   filteredUsers: User[] = [];
   users: User[] = [];
   searchQueryText = '';
+  ssid;
   constructor(private modalCtrl: ModalController,public auth: AuthService,public alertController: AlertController) { }
 
   ngOnInit() {
@@ -22,6 +23,15 @@ export class AddMemberPage implements OnInit {
       this.users = [...response];
       this.updateFilter(this.searchQueryText);
     });
+  
+    this.subscription= this.auth.myUser.subscribe((response)=> {
+      this.ssid = response[0].ssid;
+    });   
+    setTimeout(()=>{
+     console.log(this.ssid);
+     
+      }, 100)
+
   }
   
   updateFilter(event) {
@@ -44,11 +54,11 @@ export class AddMemberPage implements OnInit {
   
    onActivate(event) {
     if (event.type == "click") {
-     this.presentAlert(event.row);
-  }
+     this.presentAlert(event.row["uid"],this.ssid,event.row["latitude"],event.row["longitude"]);     
+     }
   }
   
-  async presentAlert(user) {
+  async presentAlert(uid,ssid,latitude,longitude) {
     const alert = await this.alertController.create({
       cssClass: 'custom-alert',
       header: 'ATTENZIONE',
@@ -57,7 +67,7 @@ export class AddMemberPage implements OnInit {
       [
        {
         text: 'ACCETTA',
-        handler: ()=> this.addMember(user)
+        handler: ()=> this.auth.addMembro(uid,ssid,latitude,longitude)
        },
        
       {
@@ -70,9 +80,6 @@ export class AddMemberPage implements OnInit {
     await alert.present();
   }
 
-  addMember(user){
-   this.auth.addMembro(user["uid"]);
-     
-  }
+
 
 }
